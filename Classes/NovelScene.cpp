@@ -95,8 +95,8 @@ bool NovelScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
     CCLog("%s", "ccTouchBegan");
     
+    // テキストエリアのタッチを判定
     CCLayer* pLayer = (CCLayer*) this->getChildByTag(kTag_TextLayer);
-    
     if (pLayer->boundingBox().containsPoint(pTouch->getLocation()))
     {
         // テキストをすすめる
