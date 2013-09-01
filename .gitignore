@@ -1,0 +1,6 @@
+assets
+bin
+gen
+*.so
+*.o
+*o.d
