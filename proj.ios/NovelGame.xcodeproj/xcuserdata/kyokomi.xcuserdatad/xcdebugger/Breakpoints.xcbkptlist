@@ -29,5 +29,18 @@
          landmarkName = "b2GearJoint::InitVelocityConstraints(const b2SolverData&amp; data)"
          landmarkType = "5">
       </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../../cocos2dx/base_nodes/CCNode.cpp"
+         timestampString = "399997855.198156"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "471"
+         endingLineNumber = "471"
+         landmarkName = "CCNode::setUserData(void *var)"
+         landmarkType = "5">
+      </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

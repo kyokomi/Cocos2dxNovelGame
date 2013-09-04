@@ -208,6 +208,7 @@
 		BF1712461292920000B8313A /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB212928DE900B8313A /* libxml2.dylib */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
+		CE1F56F017D775330012F439 /* menu_button.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1F56EF17D775330012F439 /* menu_button.png */; };
 		CE329C5C17D32DCC00A26D7B /* TitleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE329C5A17D32DCC00A26D7B /* TitleScene.cpp */; };
 		CE329C5F17D32DD600A26D7B /* NovelScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE329C5D17D32DD600A26D7B /* NovelScene.cpp */; };
 		CE329C6117D33AE700A26D7B /* 013-PostTown01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE329C6017D33AE700A26D7B /* 013-PostTown01.jpg */; };
@@ -647,6 +648,7 @@
 		BF170DB212928DE900B8313A /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE1F56EF17D775330012F439 /* menu_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_button.png; sourceTree = "<group>"; };
 		CE329C5A17D32DCC00A26D7B /* TitleScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TitleScene.cpp; path = ../Classes/TitleScene.cpp; sourceTree = "<group>"; };
 		CE329C5B17D32DCC00A26D7B /* TitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TitleScene.h; path = ../Classes/TitleScene.h; sourceTree = "<group>"; };
 		CE329C5D17D32DD600A26D7B /* NovelScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NovelScene.cpp; path = ../Classes/NovelScene.cpp; sourceTree = "<group>"; };
@@ -1488,6 +1490,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE1F56EF17D775330012F439 /* menu_button.png */,
 				CE329C6017D33AE700A26D7B /* 013-PostTown01.jpg */,
 				1AFAF8B916D35E4900DB1158 /* CloseNormal.png */,
 				1AFAF8BA16D35E4900DB1158 /* CloseSelected.png */,
@@ -1589,6 +1592,7 @@
 				1A9CE88C1765A12C000E3062 /* json_valueiterator.inl in Resources */,
 				1A9CE88E1765A12C000E3062 /* sconscript in Resources */,
 				CE329C6117D33AE700A26D7B /* 013-PostTown01.jpg in Resources */,
+				CE1F56F017D775330012F439 /* menu_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
