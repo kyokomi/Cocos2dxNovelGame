@@ -70,6 +70,8 @@ bool NovelScene::init()
     // -----------------------------
     // TODO: テキスト表示 Class化したい・・・
     // -----------------------------
+    
+    // 本文
     CCLayerColor * textLayer = CCLayerColor::create(ccc4(0, 0, 0, 255 * 0.7), winSize.width, winSize.height * 0.25);
     textLayer->setPosition(CCPointZero);
     textLayer->setTag(kTag_TextLayer);
@@ -78,7 +80,7 @@ bool NovelScene::init()
     
     CCString* string = CCString::createWithFormat("w = %f.1 h = %f.1 f = %f", winSize.width, winSize.height, BASE_FONT_SIZE);
     CCLog("%s", string->getCString());
-    // テキスト
+    // 本文テキスト
     CCLabelTTF* textLabel = CCLabelTTF::create(string->getCString(), "", BASE_FONT_SIZE);
     textLabel->setAnchorPoint(ccp(0, textLabel->getAnchorPoint().y));
     textLabel->setColor(ccWHITE);
@@ -86,8 +88,26 @@ bool NovelScene::init()
                                textLayer->getContentSize().height * 0.7));
     textLabel->setTag(kTag_TextLayer_textLabel);
     textLabel->setZOrder(kZOrder_TextLayer);
+    // 
     textLayer->addChild(textLabel);
-
+    
+    // 名前
+    CCLayerColor * nameTextLayer = CCLayerColor::create(ccc4(0, 0, 0, 255 * 0.7), winSize.width * 0.4, winSize.height * 0.1);
+    nameTextLayer->setPosition(ccp(textLayer->getPositionX(), textLayer->getPositionY() + textLayer->getContentSize().height + nameTextLayer->getContentSize().height * 0.05));
+    nameTextLayer->setTag(kTag_TextLayer_name);
+    nameTextLayer->setZOrder(kZOrder_TextLayer);
+    this->addChild(nameTextLayer);
+    // 名前テキスト
+    CCLabelTTF* nameTextLabel = CCLabelTTF::create("システムメッセージ", "", BASE_FONT_SIZE);
+    nameTextLabel->setAnchorPoint(ccp(0, nameTextLabel->getAnchorPoint().y));
+    nameTextLabel->setColor(ccGREEN);
+    nameTextLabel->setPosition(ccp(nameTextLayer->getContentSize().width * 0.05,
+                               nameTextLayer->getContentSize().height * 0.5));
+    nameTextLabel->setTag(kTag_TextLayer_nameTextLabel);
+    nameTextLabel->setZOrder(kZOrder_TextLayer);
+    //
+    nameTextLayer->addChild(nameTextLabel);
+    
     // -----------------------------
     // TODO: キャラ顔画像表示
     
@@ -108,7 +128,7 @@ bool NovelScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
     if (pLayer->boundingBox().containsPoint(pTouch->getLocation()))
     {
         // テキストをすすめる
-        dispText(nextText());
+        nextNovelJson();
     }
     return true;
 }
@@ -124,10 +144,19 @@ void NovelScene::dispText(string text)
     }
 }
 
-string NovelScene::nextText()
+void NovelScene::dispName(string name)
 {
-    string text = "おわり";
-        
+    CCLayer* pLayer = (CCLayer*) this->getChildByTag(kTag_TextLayer_name);
+    if (pLayer)
+    {
+        // テキストをすすめる
+        CCLabelTTF* nameTextLabel = (CCLabelTTF*) pLayer->getChildByTag(kTag_TextLayer_nameTextLabel);
+        nameTextLabel->setString(name.c_str());
+    }
+}
+
+void NovelScene::nextNovelJson()
+{
     std::stringstream ss;
     ss << m_novelJsonFile;
     
@@ -164,15 +193,19 @@ string NovelScene::nextText()
         }
 
         m_textIndex++;
+
+        if (novel["name"])
+        {
+            dispName(novel["name"].get<string>());
+        }
         
         if (novel["text"])
         {
             // テキスト取得できたらループを抜ける
-            text = novel["text"].get<string>();
+            dispText(novel["text"].get<string>());
             break;
         }
     }
-    return text;
 }
 
 

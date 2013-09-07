@@ -24,7 +24,7 @@ class NovelScene : public cocos2d::CCLayer
     int m_textIndex;
     
     /** 次のテキストを処理 */
-    string nextText();
+    void nextNovelJson();
     
     /** 選択肢ボタンの生成 */
     void makeSelectSpriteButton(string str1, int next1Id, string str2, int next2Id);
@@ -33,6 +33,8 @@ class NovelScene : public cocos2d::CCLayer
     
     /** テキストを表示させる */
     void dispText(string text);
+    /** 名前を表示させる */
+    void dispName(string name);
     
     void makeActorImage(const char* imageFilePath, int dict);
     void removeActorImage(int dict);
@@ -42,7 +44,9 @@ protected:
     {
         kTag_TextLayer = 100,
         kTag_TextLayer_textLabel = 101,
-
+        kTag_TextLayer_name = 200,
+        kTag_TextLayer_nameTextLabel = 201,
+        
         kTag_ActorDict     = 1000,
         kTag_ActorDictLeft,
         kTag_ActorDictCenter,
