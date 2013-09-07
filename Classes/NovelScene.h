@@ -33,11 +33,20 @@ class NovelScene : public cocos2d::CCLayer
     
     /** テキストを表示させる */
     void dispText(string text);
+    
+    void makeActorImage(const char* imageFilePath, int dict);
+    void removeActorImage(int dict);
 protected:
     
     enum kTag
     {
-        kTag_TextLayer = 1,
+        kTag_TextLayer = 100,
+        kTag_TextLayer_textLabel = 101,
+
+        kTag_ActorDict     = 1000,
+        kTag_ActorDictLeft,
+        kTag_ActorDictCenter,
+        kTag_ActorDictRight,
         
         /** 選択肢用 */
         kTag_MenuSelect = 100000,
@@ -45,9 +54,20 @@ protected:
         kTag_MenuSelect2,
     };
     
-    enum kTagTextLayer
+    enum kZOrder
     {
-        kTag_TextLayer_textLabel = 1,
+        kZOrder_Background = 1,
+        kZOrder_Actor,
+        kZOrder_TextLayer,
+        kZOrder_MenuSelect,
+    };
+    
+    enum kNovelType
+    {
+        kTextType = 1,
+        kSelectItem = 2,
+        kActorImageShow = 3,
+        kActorImageHide = 4,
     };
     
 public:
