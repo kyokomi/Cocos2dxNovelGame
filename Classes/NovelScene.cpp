@@ -8,7 +8,6 @@
 
 #include "NovelScene.h"
 #include "cocos2d.h"
-#include "TextAreaLayer.h"
 #include "LabelSprite.h"
 #include "MenuItemSelectLabelSprite.h"
 
@@ -28,37 +27,13 @@ isMenuSelect(false)
     // jsonファイル読み込み
     unsigned long size = 0;
 
-    unsigned char* smth = CCFileUtils::sharedFileUtils()->getFileData("test.json", "r", &size);
-    CCLog("Data is : %s",smth);
+    m_novelJsonFile = CCFileUtils::sharedFileUtils()->getFileData("test.json", "r", &size);
+    CCLog("Data is : %s",m_novelJsonFile);
     CCLog("Size: %lu\n\n",size);
     fflush(stdout);
 
     std::stringstream ss;
-    ss << smth;
-    
-    picojson::value json; ss >> json;
-    picojson::object& o = json.get<picojson::object>();
-    double hoge = o["hoge"].get<double>();
-//    bool fuga = o["fuga"].get<bool>();
-    string piyo = o["piyo"].get<string>();
-//    picojson::array hogehoge = o["hogehoge"].get<picojson::array>();
-    CCLog("hoge is : %.0f", hoge);
-    CCLog("piyo is : %s", piyo.c_str());
-    
-    m_textArray.push_back("このテキストはテスト用です。");
-    m_textTypeArray.push_back(1);
-    m_textArray.push_back("ノベルゲームのようなテキスト送りがやりたい");
-    m_textTypeArray.push_back(1);
-    m_textArray.push_back("ログ表示機能も必要");
-    m_textTypeArray.push_back(1);
-    m_textArray.push_back("選択肢も必要");
-    m_textTypeArray.push_back(2);
-    m_textArray.push_back("画面揺れとかホワイトアウトもできれば");
-    m_textTypeArray.push_back(1);
-    m_textArray.push_back("立ちキャラの明暗で会話してるほうをわかりやすく");
-    m_textTypeArray.push_back(2);
-    m_textArray.push_back("とりあえずこんなもん");
-    m_textTypeArray.push_back(1);
+    ss << m_novelJsonFile;
 }
 
 CCScene* NovelScene::scene()
@@ -101,7 +76,7 @@ bool NovelScene::init()
     this->addChild(textLayer);
     
     // テキスト
-    CCLabelTTF* textLabel = CCLabelTTF::create("ほげほげ", "", 18.0);
+    CCLabelTTF* textLabel = CCLabelTTF::create("", "", 18.0);
     textLabel->setAnchorPoint(ccp(0, textLabel->getAnchorPoint().y));
     textLabel->setColor(ccWHITE);
     textLabel->setPosition(ccp(textLayer->getContentSize().width * 0.05,
@@ -117,7 +92,7 @@ bool NovelScene::init()
 
 bool NovelScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
-    CCLog("%s", "ccTouchBegan");
+    CCLog("%s", "------ ccTouchBegan ------");
     
     if (isMenuSelect)
     {
@@ -148,20 +123,27 @@ void NovelScene::dispText(string text)
 string NovelScene::nextText()
 {
     string text = "おわり";
-    
-    if (m_textIndex < m_textArray.size())
-    {
-        text = m_textArray[m_textIndex];
         
-        if (m_textIndex < m_textTypeArray.size())
-        {
-            int textType = m_textTypeArray[m_textIndex];
-            if (textType == 2) {
-                isMenuSelect = true;
-                makeSelectSpriteButton("YES", "NO");
-            }
+    std::stringstream ss;
+    ss << m_novelJsonFile;
+    
+    picojson::value novelJson;
+    ss >> novelJson;
+    
+    picojson::object& o = novelJson.get<picojson::object>();
+    picojson::array novelArray = o["novel"].get<picojson::array>();
+    
+    if (m_textIndex < novelArray.size())
+    {
+        picojson::object& novel = novelArray[m_textIndex].get<picojson::object>();
+        text = novel["text"].get<string>();
+        int textType = novel["type"].get<double>();
+        // TODO: あとでenumにする
+        if (textType == 2) {
+            isMenuSelect = true;
+            makeSelectSpriteButton(novel["select1"].get<string>(), novel["select2"].get<string>());
         }
-
+        
         m_textIndex++;
     }
     return text;
@@ -172,24 +154,30 @@ void NovelScene::makeSelectSpriteButton(string str1, string str2)
 {
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
-    CCMenu* pMenu = (CCMenu*) this->getChildByTag(1000000);
+    CCMenu* pMenu = (CCMenu*) this->getChildByTag(kTag_MenuSelect);
     if (pMenu)
     {
-        // TODO: テキスト設定
         pMenu->setVisible(true);
+        MenuItemSelectLabelSprite* menuSprite1 = (MenuItemSelectLabelSprite*) pMenu->getChildByTag(kTag_MenuSelect1);
+        menuSprite1->setText(str1.c_str());
+        
+        MenuItemSelectLabelSprite* menuSprite2 = (MenuItemSelectLabelSprite*) pMenu->getChildByTag(kTag_MenuSelect2);
+        menuSprite2->setText(str2.c_str());
     }
     else
     {
         // 選択肢1
         MenuItemSelectLabelSprite* menuSprite1 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str1.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite1->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.55));
+        menuSprite1->setTag(kTag_MenuSelect1);
         // 選択肢2
         MenuItemSelectLabelSprite* menuSprite2 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str2.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite2->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.45));
+        menuSprite2->setTag(kTag_MenuSelect2);
         
         pMenu = CCMenu::create(menuSprite1, menuSprite2, NULL);
         pMenu->setPosition(CCPointZero);
-        pMenu->setTag(1000000);
+        pMenu->setTag(kTag_MenuSelect);
         
         this->addChild(pMenu);
     }
@@ -198,7 +186,7 @@ void NovelScene::makeSelectSpriteButton(string str1, string str2)
 
 void NovelScene::menuSelectCallback(cocos2d::CCObject *pSender)
 {
-    this->getChildByTag(1000000)->setVisible(false);
+    this->getChildByTag(kTag_MenuSelect)->setVisible(false);
     isMenuSelect = false;
 
     MenuItemSelectLabelSprite* menuItem = (MenuItemSelectLabelSprite*) pSender;

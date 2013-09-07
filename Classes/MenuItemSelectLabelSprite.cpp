@@ -49,3 +49,14 @@ bool MenuItemSelectLabelSprite::initWithLabelSprite(const char *pszFileName, con
     
     return true;
 }
+
+void MenuItemSelectLabelSprite::setText(const char *string)
+{
+    labelText = string;
+    ((LabelSprite*) this->getNormalImage())->setLabelText(string);
+    ((LabelSprite*) this->getSelectedImage())->setLabelText(string);
+    ((LabelSprite*) this->getDisabledImage())->setLabelText(string);
+}
+
+
+

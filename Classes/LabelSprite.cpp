@@ -46,3 +46,10 @@ bool LabelSprite::initWithLabel(const char *pszFileName, const char *string, con
     this->setOpacity(128);
     return true;
 }
+
+void LabelSprite::setLabelText(const char *string)
+{
+    this->m_pLabel->setString(string);
+}
+
+

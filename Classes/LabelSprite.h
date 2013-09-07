@@ -21,6 +21,8 @@ public:
     
     virtual bool initWithLabel(const char *pszFileName, const char *string, const char *fontName, float fontSize, ccColor3B color);
     static LabelSprite* createWithLabel(const char *pszFileName, const char *string, const char *fontName, float fontSize, ccColor3B color);
+    void setLabelText(const char *string);
+    
 };
 
 #endif /* defined(__NovelGame__CCLabelSprite__) */
