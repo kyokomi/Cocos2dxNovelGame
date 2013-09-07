@@ -27,7 +27,7 @@ class NovelScene : public cocos2d::CCLayer
     string nextText();
     
     /** 選択肢ボタンの生成 */
-    void makeSelectSpriteButton(string str1, string str2);
+    void makeSelectSpriteButton(string str1, int next1Id, string str2, int next2Id);
     /** 選択肢を選んだ時のコールバック */
     void menuSelectCallback(CCObject *pSender);
     

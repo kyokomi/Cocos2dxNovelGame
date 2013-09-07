@@ -8,10 +8,10 @@
 
 #include "MenuItemSelectLabelSprite.h"
 
-MenuItemSelectLabelSprite* MenuItemSelectLabelSprite::createWithLabelSprite(const char *pszFileName, const char *string, const char *fontName, float fontSize, ccColor3B normalColor, ccColor3B selectedColor, ccColor3B disabledColor, cocos2d::CCObject *target, SEL_MenuHandler selector)
+MenuItemSelectLabelSprite* MenuItemSelectLabelSprite::createWithLabelSprite(const char *pszFileName, const char *string, const char *fontName, float fontSize, ccColor3B normalColor, ccColor3B selectedColor, ccColor3B disabledColor, int nextId, cocos2d::CCObject *target, SEL_MenuHandler selector)
 {
     MenuItemSelectLabelSprite *pRet = new MenuItemSelectLabelSprite();
-    if (pRet && pRet->initWithLabelSprite(pszFileName, string, fontName, fontSize, normalColor, selectedColor, disabledColor, target, selector))
+    if (pRet && pRet->initWithLabelSprite(pszFileName, string, fontName, fontSize, normalColor, selectedColor, disabledColor, nextId, target, selector))
     {
         pRet->autorelease();
         return pRet;
@@ -23,7 +23,7 @@ MenuItemSelectLabelSprite* MenuItemSelectLabelSprite::createWithLabelSprite(cons
     }
 }
 
-bool MenuItemSelectLabelSprite::initWithLabelSprite(const char *pszFileName, const char *string, const char *fontName, float fontSize, ccColor3B normalColor, ccColor3B selectedColor, ccColor3B disabledColor, cocos2d::CCObject *target, SEL_MenuHandler selector)
+bool MenuItemSelectLabelSprite::initWithLabelSprite(const char *pszFileName, const char *string, const char *fontName, float fontSize, ccColor3B normalColor, ccColor3B selectedColor, ccColor3B disabledColor, int nextId, cocos2d::CCObject *target, SEL_MenuHandler selector)
 {
     LabelSprite* normalLabelSprite = LabelSprite::createWithLabel(pszFileName, string, fontName, fontSize, normalColor);
     if (normalLabelSprite == NULL)
@@ -45,14 +45,16 @@ bool MenuItemSelectLabelSprite::initWithLabelSprite(const char *pszFileName, con
     {
         return false;
     }
-    labelText = string;
+    m_labelText = string;
+    m_nextId = nextId;
     
     return true;
 }
 
-void MenuItemSelectLabelSprite::setText(const char *string)
+void MenuItemSelectLabelSprite::setNovelText(const char *string, int nextId)
 {
-    labelText = string;
+    m_labelText = string;
+    m_nextId = nextId;
     ((LabelSprite*) this->getNormalImage())->setLabelText(string);
     ((LabelSprite*) this->getSelectedImage())->setLabelText(string);
     ((LabelSprite*) this->getDisabledImage())->setLabelText(string);

@@ -133,6 +133,7 @@ string NovelScene::nextText()
     picojson::object& o = novelJson.get<picojson::object>();
     picojson::array novelArray = o["novel"].get<picojson::array>();
     
+    CCLOG("index = %d", m_textIndex);
     if (m_textIndex < novelArray.size())
     {
         picojson::object& novel = novelArray[m_textIndex].get<picojson::object>();
@@ -141,16 +142,19 @@ string NovelScene::nextText()
         // TODO: あとでenumにする
         if (textType == 2) {
             isMenuSelect = true;
-            makeSelectSpriteButton(novel["select1"].get<string>(), novel["select2"].get<string>());
+            makeSelectSpriteButton(novel["select1"].get<string>(), novel["next1Id"].get<double>(),
+                                   novel["select2"].get<string>(), novel["next2Id"].get<double>());
         }
-        
-        m_textIndex++;
+        else
+        {
+            m_textIndex++;
+        }
     }
     return text;
 }
 
 
-void NovelScene::makeSelectSpriteButton(string str1, string str2)
+void NovelScene::makeSelectSpriteButton(string str1, int next1Id, string str2, int next2Id)
 {
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
@@ -159,19 +163,19 @@ void NovelScene::makeSelectSpriteButton(string str1, string str2)
     {
         pMenu->setVisible(true);
         MenuItemSelectLabelSprite* menuSprite1 = (MenuItemSelectLabelSprite*) pMenu->getChildByTag(kTag_MenuSelect1);
-        menuSprite1->setText(str1.c_str());
+        menuSprite1->setNovelText(str1.c_str(), next1Id);
         
         MenuItemSelectLabelSprite* menuSprite2 = (MenuItemSelectLabelSprite*) pMenu->getChildByTag(kTag_MenuSelect2);
-        menuSprite2->setText(str2.c_str());
+        menuSprite2->setNovelText(str2.c_str(), next2Id);
     }
     else
     {
         // 選択肢1
-        MenuItemSelectLabelSprite* menuSprite1 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str1.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, this, menu_selector(NovelScene::menuSelectCallback));
+        MenuItemSelectLabelSprite* menuSprite1 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str1.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, next1Id, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite1->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.55));
         menuSprite1->setTag(kTag_MenuSelect1);
         // 選択肢2
-        MenuItemSelectLabelSprite* menuSprite2 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str2.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, this, menu_selector(NovelScene::menuSelectCallback));
+        MenuItemSelectLabelSprite* menuSprite2 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str2.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, next2Id, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite2->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.45));
         menuSprite2->setTag(kTag_MenuSelect2);
         
@@ -190,5 +194,12 @@ void NovelScene::menuSelectCallback(cocos2d::CCObject *pSender)
     isMenuSelect = false;
 
     MenuItemSelectLabelSprite* menuItem = (MenuItemSelectLabelSprite*) pSender;
-    dispText(menuItem->labelText);
+    dispText(menuItem->m_labelText);
+    if (menuItem->m_nextId > 0)
+    {
+        m_textIndex = menuItem->m_nextId - 1;
+            CCLOG("index set = %d", m_textIndex);
+    }
 }
+
+
