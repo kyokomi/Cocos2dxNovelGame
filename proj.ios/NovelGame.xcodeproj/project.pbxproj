@@ -664,6 +664,7 @@
 		CE41FD1517DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItemSelectLabelSprite.h; path = ../Classes/MenuItemSelectLabelSprite.h; sourceTree = "<group>"; };
 		CE41FD1917DAF1110093C3F0 /* actor1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actor1.png; sourceTree = "<group>"; };
 		CE41FD1A17DAF1110093C3F0 /* actor2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = actor2.png; sourceTree = "<group>"; };
+		CE59456417DAFEA500CECD91 /* AppMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppMacros.h; path = ../Classes/AppMacros.h; sourceTree = "<group>"; };
 		CE93116F17D7FAF50006D18D /* picojson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = picojson.h; path = ../Classes/picojson.h; sourceTree = "<group>"; };
 		CE93117017D7FE5F0006D18D /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		D41A0AD0160F154A004552AE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../proj.ios/Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -1206,6 +1207,7 @@
 				CE41FD1117DA9EB50093C3F0 /* LabelSprite.h */,
 				CE41FD1417DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp */,
 				CE41FD1517DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.h */,
+				CE59456417DAFEA500CECD91 /* AppMacros.h */,
 			);
 			name = Classes;
 			path = ../classes;

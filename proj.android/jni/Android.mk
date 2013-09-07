@@ -8,6 +8,8 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
+                   ../../Classes/LabelSprite.cpp \
+                   ../../Classes/MenuItemSelectLabelSprite.cpp \
                    ../../Classes/TitleScene.cpp \
                    ../../Classes/NovelScene.cpp
 

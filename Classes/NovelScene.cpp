@@ -8,6 +8,7 @@
 
 #include "NovelScene.h"
 #include "cocos2d.h"
+#include "AppMacros.h"
 #include "LabelSprite.h"
 #include "MenuItemSelectLabelSprite.h"
 
@@ -92,8 +93,10 @@ bool NovelScene::init()
     textLayer->setTag(kTag_TextLayer);
     this->addChild(textLayer);
     
+    CCString* string = CCString::createWithFormat("w = %f.1 h = %f.1 f = %f", winSize.width, winSize.height, BASE_FONT_SIZE);
+    CCLog("%s", string->getCString());
     // テキスト
-    CCLabelTTF* textLabel = CCLabelTTF::create("", "", 18.0);
+    CCLabelTTF* textLabel = CCLabelTTF::create(string->getCString(), "", BASE_FONT_SIZE);
     textLabel->setAnchorPoint(ccp(0, textLabel->getAnchorPoint().y));
     textLabel->setColor(ccWHITE);
     textLabel->setPosition(ccp(textLayer->getContentSize().width * 0.05,
@@ -188,11 +191,11 @@ void NovelScene::makeSelectSpriteButton(string str1, int next1Id, string str2, i
     else
     {
         // 選択肢1
-        MenuItemSelectLabelSprite* menuSprite1 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str1.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, next1Id, this, menu_selector(NovelScene::menuSelectCallback));
+        MenuItemSelectLabelSprite* menuSprite1 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str1.c_str(), "Arial", BASE_FONT_SIZE, ccBLACK, ccBLUE, ccRED, next1Id, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite1->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.55));
         menuSprite1->setTag(kTag_MenuSelect1);
         // 選択肢2
-        MenuItemSelectLabelSprite* menuSprite2 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str2.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, next2Id, this, menu_selector(NovelScene::menuSelectCallback));
+        MenuItemSelectLabelSprite* menuSprite2 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str2.c_str(), "Arial", BASE_FONT_SIZE, ccBLACK, ccBLUE, ccRED, next2Id, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite2->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.45));
         menuSprite2->setTag(kTag_MenuSelect2);
         

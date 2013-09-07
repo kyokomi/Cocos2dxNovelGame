@@ -8,7 +8,7 @@
 
 #include "TitleScene.h"
 #include "cocos2d.h"
-
+#include "AppMacros.h"
 #include "NovelScene.h"
 
 using namespace cocos2d;
@@ -32,7 +32,7 @@ bool TitleScene::init()
     
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
-    CCLabelTTF* label = CCLabelTTF::create("ノベルゲーム", "Arial", 24);
+    CCLabelTTF* label = CCLabelTTF::create("ノベルゲーム", "Arial", BASE_FONT_SIZE * 1.5);
     CCMenuItemLabel* menuItem = CCMenuItemLabel::create(label, this, menu_selector(TitleScene::menuItemCallback));
     menuItem->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.5));
     menuItem->setTag(1);
