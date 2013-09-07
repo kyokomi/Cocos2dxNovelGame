@@ -21,7 +21,6 @@ class NovelScene : public cocos2d::CCLayer
     vector<string> m_textArray;
     int m_textIndex;
     string nextText();
-    void makeSelectButton(string str1, string str2);
     void makeSelectSpriteButton(string str1, string str2);
     void menuSelectCallback(CCObject *pSender);
     void dispText(string text);

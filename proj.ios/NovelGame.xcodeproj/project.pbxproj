@@ -213,6 +213,9 @@
 		CE329C5F17D32DD600A26D7B /* NovelScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE329C5D17D32DD600A26D7B /* NovelScene.cpp */; };
 		CE329C6117D33AE700A26D7B /* 013-PostTown01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CE329C6017D33AE700A26D7B /* 013-PostTown01.jpg */; };
 		CE329C6717D343EE00A26D7B /* TextAreaLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE329C6517D343EE00A26D7B /* TextAreaLayer.cpp */; };
+		CE41FD1217DA9EB50093C3F0 /* LabelSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE41FD1017DA9EB50093C3F0 /* LabelSprite.cpp */; };
+		CE41FD1617DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE41FD1417DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp */; };
+		CE93117117D7FE5F0006D18D /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = CE93117017D7FE5F0006D18D /* test.json */; };
 		D41A0AD1160F154A004552AE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D41A0AD0160F154A004552AE /* Default-568h@2x.png */; };
 		D446FD6E16102124000ADA7B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D446FD6D16102124000ADA7B /* Default@2x.png */; };
 		D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D44C620B132DFF330009C878 /* OpenAL.framework */; };
@@ -656,6 +659,12 @@
 		CE329C6017D33AE700A26D7B /* 013-PostTown01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "013-PostTown01.jpg"; sourceTree = "<group>"; };
 		CE329C6517D343EE00A26D7B /* TextAreaLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextAreaLayer.cpp; path = ../Classes/TextAreaLayer.cpp; sourceTree = "<group>"; };
 		CE329C6617D343EE00A26D7B /* TextAreaLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextAreaLayer.h; path = ../Classes/TextAreaLayer.h; sourceTree = "<group>"; };
+		CE41FD1017DA9EB50093C3F0 /* LabelSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LabelSprite.cpp; path = ../Classes/LabelSprite.cpp; sourceTree = "<group>"; };
+		CE41FD1117DA9EB50093C3F0 /* LabelSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LabelSprite.h; path = ../Classes/LabelSprite.h; sourceTree = "<group>"; };
+		CE41FD1417DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MenuItemSelectLabelSprite.cpp; path = ../Classes/MenuItemSelectLabelSprite.cpp; sourceTree = "<group>"; };
+		CE41FD1517DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItemSelectLabelSprite.h; path = ../Classes/MenuItemSelectLabelSprite.h; sourceTree = "<group>"; };
+		CE93116F17D7FAF50006D18D /* picojson.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = picojson.h; path = ../Classes/picojson.h; sourceTree = "<group>"; };
+		CE93117017D7FE5F0006D18D /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		D41A0AD0160F154A004552AE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../proj.ios/Default-568h@2x.png"; sourceTree = "<group>"; };
 		D446FD6D16102124000ADA7B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../proj.ios/Default@2x.png"; sourceTree = "<group>"; };
 		D44C620B132DFF330009C878 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -1193,6 +1202,11 @@
 				CE329C5E17D32DD600A26D7B /* NovelScene.h */,
 				CE329C6517D343EE00A26D7B /* TextAreaLayer.cpp */,
 				CE329C6617D343EE00A26D7B /* TextAreaLayer.h */,
+				CE93116F17D7FAF50006D18D /* picojson.h */,
+				CE41FD1017DA9EB50093C3F0 /* LabelSprite.cpp */,
+				CE41FD1117DA9EB50093C3F0 /* LabelSprite.h */,
+				CE41FD1417DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp */,
+				CE41FD1517DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -1490,6 +1504,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE93117017D7FE5F0006D18D /* test.json */,
 				CE1F56EF17D775330012F439 /* menu_button.png */,
 				CE329C6017D33AE700A26D7B /* 013-PostTown01.jpg */,
 				1AFAF8B916D35E4900DB1158 /* CloseNormal.png */,
@@ -1593,6 +1608,7 @@
 				1A9CE88E1765A12C000E3062 /* sconscript in Resources */,
 				CE329C6117D33AE700A26D7B /* 013-PostTown01.jpg in Resources */,
 				CE1F56F017D775330012F439 /* menu_button.png in Resources */,
+				CE93117117D7FE5F0006D18D /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1788,6 +1804,8 @@
 				CE329C5C17D32DCC00A26D7B /* TitleScene.cpp in Sources */,
 				CE329C5F17D32DD600A26D7B /* NovelScene.cpp in Sources */,
 				CE329C6717D343EE00A26D7B /* TextAreaLayer.cpp in Sources */,
+				CE41FD1217DA9EB50093C3F0 /* LabelSprite.cpp in Sources */,
+				CE41FD1617DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

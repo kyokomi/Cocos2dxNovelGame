@@ -9,6 +9,14 @@
 #include "NovelScene.h"
 #include "cocos2d.h"
 #include "TextAreaLayer.h"
+#include "LabelSprite.h"
+#include "MenuItemSelectLabelSprite.h"
+
+#include "picojson.h"
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <iostream>
 
 using namespace cocos2d;
 using namespace std;
@@ -17,6 +25,26 @@ NovelScene::NovelScene()
 :m_textIndex(0),
 isMenuSelect(false)
 {
+    // jsonファイル読み込み
+    unsigned long size = 0;
+
+    unsigned char* smth = CCFileUtils::sharedFileUtils()->getFileData("test.json", "r", &size);
+    CCLog("Data is : %s",smth);
+    CCLog("Size: %lu\n\n",size);
+    fflush(stdout);
+
+    std::stringstream ss;
+    ss << smth;
+    
+    picojson::value json; ss >> json;
+    picojson::object& o = json.get<picojson::object>();
+    double hoge = o["hoge"].get<double>();
+//    bool fuga = o["fuga"].get<bool>();
+    string piyo = o["piyo"].get<string>();
+//    picojson::array hogehoge = o["hogehoge"].get<picojson::array>();
+    CCLog("hoge is : %.0f", hoge);
+    CCLog("piyo is : %s", piyo.c_str());
+    
     m_textArray.push_back("このテキストはテスト用です。");
     m_textTypeArray.push_back(1);
     m_textArray.push_back("ノベルゲームのようなテキスト送りがやりたい");
@@ -55,17 +83,17 @@ bool NovelScene::init()
     
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
-    // 背景表示
+    // TODO: 背景表示
     CCSprite* background = CCSprite::create("013-PostTown01.jpg");
     background->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.5));
     this->addChild(background);
     
-    // BGM再生
+    // TODO: BGM再生
     
-    // 立ち絵表示
+    // TODO: 立ち絵表示
     
     // -----------------------------
-    // テキスト表示 Class化したい・・・
+    // TODO: テキスト表示 Class化したい・・・
     // -----------------------------
     CCLayerColor * textLayer = CCLayerColor::create(ccc4(0, 0, 0, 255 * 0.7), winSize.width, winSize.height * 0.25);
     textLayer->setPosition(CCPointZero);
@@ -82,20 +110,8 @@ bool NovelScene::init()
     textLayer->addChild(textLabel);
 
     // -----------------------------
-    // キャラ顔画像表示
-    
-    // メニューボタン表示
-    
-//    CCLabelTTF* label = CCLabelTTF::create("ノベルゲーム", "Arial", 24);
-//    CCMenuItemLabel* menuItem = CCMenuItemLabel::create(label, this, menu_selector(TitleScene::menuItemCallback));
-//    menuItem->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.5));
-//    menuItem->setTag(1);
-    
-//    CCMenu* pMenu = CCMenu::create(menuItem, NULL);
-//    pMenu->setPosition(CCPointZero);
-//    pMenu->setTag(100);
-//    this->addChild(pMenu);
-    
+    // TODO: キャラ顔画像表示
+        
     return true;
 }
 
@@ -151,44 +167,6 @@ string NovelScene::nextText()
     return text;
 }
 
-void NovelScene::makeSelectButton(string str1, string str2)
-{
-    CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-    
-    CCMenu* pMenu = (CCMenu*) this->getChildByTag(1000000);
-    if (pMenu)
-    {
-        // TODO: テキスト設定
-        pMenu->setVisible(true);
-    }
-    else
-    {
-        CCLabelTTF* label1 = CCLabelTTF::create(str1.c_str(), "Arial", 24);
-//        CCLayerColor* layer1 = CCLayerColor::create(ccc4(0, 0, 0, 128), winSize.width * 0.5, label1->getContentSize().height);
-//        label1->setPosition(ccp(layer1->getContentSize().width * 0.5, layer1->getContentSize().height * 0.5));
-//        layer1->addChild(label1);
-
-        CCMenuItemLabel* menuItem1 = CCMenuItemLabel::create(label1, this, menu_selector(NovelScene::menuSelectCallback));
-        menuItem1->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.55));
-        menuItem1->setUserData(ccs(str1));
-
-        
-        CCLabelTTF* label2 = CCLabelTTF::create(str2.c_str(), "Arial", 24);
-//        CCLayerColor* layer2 = CCLayerColor::create(ccc4(0, 0, 0, 128), winSize.width * 0.5, label2->getContentSize().height);
-//        label2->setPosition(ccp(layer2->getContentSize().width * 0.5, layer2->getContentSize().height * 0.5));
-//        layer2->addChild(label2);
-
-        CCMenuItemLabel* menuItem2 = CCMenuItemLabel::create(label2, this, menu_selector(NovelScene::menuSelectCallback));
-        menuItem2->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.45));
-        menuItem2->setUserData(ccs(str2));
-        
-        pMenu = CCMenu::create(menuItem1, menuItem2, NULL);
-        pMenu->setPosition(CCPointZero);
-        pMenu->setTag(1000000);
-                
-        this->addChild(pMenu);
-    }
-}
 
 void NovelScene::makeSelectSpriteButton(string str1, string str2)
 {
@@ -202,44 +180,12 @@ void NovelScene::makeSelectSpriteButton(string str1, string str2)
     }
     else
     {
-        CCLabelTTF* label1 = CCLabelTTF::create(str1.c_str(), "Arial", 24);
-        CCSprite* sprite1 = CCSprite::create("menu_button.png");
-        sprite1->setColor(ccBLACK);
-        sprite1->setOpacity(128);
-        label1->setPosition(ccp(sprite1->getContentSize().width * 0.5, sprite1->getContentSize().height * 0.5));
-        sprite1->addChild(label1);
-        
-        CCLabelTTF* label1_select = CCLabelTTF::create(str1.c_str(), "Arial", 24);
-        CCSprite* sprite1_select = CCSprite::create("menu_button.png");
-        sprite1_select->setColor(ccBLUE);
-        sprite1_select->setOpacity(128);
-        label1_select->setPosition(ccp(sprite1_select->getContentSize().width * 0.5, sprite1_select->getContentSize().height * 0.5));
-        sprite1_select->addChild(label1_select);
-        
-        CCMenuItemSprite* menuSprite1 = CCMenuItemSprite::create(sprite1, sprite1_select, this, menu_selector(NovelScene::menuSelectCallback));
+        // 選択肢1
+        MenuItemSelectLabelSprite* menuSprite1 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str1.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite1->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.55));
-        menuSprite1->setUserObject(ccs(str1));
-        
-        // -----------------
-        
-        CCLabelTTF* label2 = CCLabelTTF::create(str2.c_str(), "Arial", 24);
-        CCSprite* sprite2 = CCSprite::create("menu_button.png");
-        sprite2->setColor(ccBLACK);
-        sprite2->setOpacity(128);
-        label2->setPosition(ccp(sprite2->getContentSize().width * 0.5, sprite2->getContentSize().height * 0.5));
-        sprite2->addChild(label2);
-
-        
-        CCLabelTTF* label2_select = CCLabelTTF::create(str2.c_str(), "Arial", 24);
-        CCSprite* sprite2_select = CCSprite::create("menu_button.png");
-        sprite2_select->setColor(ccBLUE);
-        sprite2_select->setOpacity(128);
-        label2_select->setPosition(ccp(sprite2_select->getContentSize().width * 0.5, sprite2_select->getContentSize().height * 0.5));
-        sprite2_select->addChild(label2_select);
-        
-        CCMenuItemSprite* menuSprite2 = CCMenuItemSprite::create(sprite2, sprite2_select, this, menu_selector(NovelScene::menuSelectCallback));
+        // 選択肢2
+        MenuItemSelectLabelSprite* menuSprite2 = MenuItemSelectLabelSprite::createWithLabelSprite("menu_button.png", str2.c_str(), "Arial", 24, ccBLACK, ccBLUE, ccRED, this, menu_selector(NovelScene::menuSelectCallback));
         menuSprite2->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.45));
-        menuSprite2->setUserObject(ccs(str2));
         
         pMenu = CCMenu::create(menuSprite1, menuSprite2, NULL);
         pMenu->setPosition(CCPointZero);
@@ -255,14 +201,6 @@ void NovelScene::menuSelectCallback(cocos2d::CCObject *pSender)
     this->getChildByTag(1000000)->setVisible(false);
     isMenuSelect = false;
 
-    CCMenuItemSprite* menuItem = (CCMenuItemSprite*) pSender;
-    if ((CCString*) menuItem->getUserObject())
-    {
-        CCString* str = (CCString*) menuItem->getUserObject();
-        dispText(str->getCString());
-    }
-    else
-    {
-        dispText("<<error>>");
-    }
+    MenuItemSelectLabelSprite* menuItem = (MenuItemSelectLabelSprite*) pSender;
+    dispText(menuItem->labelText);
 }
