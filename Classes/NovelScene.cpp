@@ -64,8 +64,25 @@ bool NovelScene::init()
     this->addChild(background);
     
     // TODO: BGM再生
-    
+
+    // -----------------------------
     // TODO: 立ち絵表示
+    // -----------------------------
+    CCSprite* actor1 = CCSprite::create("actor1.png");
+    actor1->setScale(0.75);
+    CCPoint point1 = ccp(actor1->boundingBox().size.width * 0.5, actor1->boundingBox().size.height * 0.5);
+    actor1->setPosition(point1);
+    actor1->setFlipX(true); // 右向きにする
+    this->addChild(actor1);
+    
+    CCSprite* actor2 = CCSprite::create("actor2.png");
+    actor2->setScale(0.75);
+    // 画面の端からスタート
+    CCPoint point2 = ccp(winSize.width - actor2->boundingBox().size.width * 0.5, actor2->boundingBox().size.height * 0.5);
+    actor2->setPosition(point2);
+    
+    this->addChild(actor2);
+
     
     // -----------------------------
     // TODO: テキスト表示 Class化したい・・・
@@ -86,7 +103,7 @@ bool NovelScene::init()
 
     // -----------------------------
     // TODO: キャラ顔画像表示
-        
+    
     return true;
 }
 
