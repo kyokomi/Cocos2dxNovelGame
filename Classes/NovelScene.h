@@ -38,10 +38,14 @@ class NovelScene : public cocos2d::CCLayer
     
     void makeActorImage(const char* imageFilePath, int dict);
     void removeActorImage(int dict);
+    
+    void changeBackground(CCSprite* sprite, void* stringValue);
+    CCFiniteTimeAction* changeBackgroundAnimation(CCSprite* sprite, string imgFilePath);
 protected:
     
     enum kTag
     {
+        kTag_Background = 1,
         kTag_TextLayer = 100,
         kTag_TextLayer_textLabel = 101,
         kTag_TextLayer_name = 200,
@@ -72,6 +76,7 @@ protected:
         kSelectItem = 2,
         kActorImageShow = 3,
         kActorImageHide = 4,
+        kBackgroundShow = 5,
     };
     
 public:

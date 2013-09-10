@@ -10,6 +10,7 @@
      {"type": 2, "text": "選択肢も必要。", "select1": "はい", "next1Id": 8, "select2": "いいえ", "next2Id": 9, "name": "(選んでください)"},
      {"type": 1, "text": "あと画面揺れとかホワイトアウトもできれば。", "name": "ジト目子"},
      {"type": 2, "text": "立ちキャラの明暗で会話してるほうをわかりやすくしたほうがいい。", "select1": "そうですね", "next1Id": 10, "select2": "気持ちはわかります", "next2Id": 10, "name": "(選んでください)"},
+     {"type": 5, "text": "背景を変えてみる", "imgPath": "017-MineTown01.jpg", "name": "ジト目子"},
      {"type": 1, "text": "とりあえずこんなもんかな。", "name": "ジト目子"},
      {"type": 3, "imgPath": "actor1.png", "dict": 1},
      {"type": 1, "text": "以上。", "name": "白子・ジト目子"}

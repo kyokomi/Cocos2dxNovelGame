@@ -63,6 +63,7 @@ bool NovelScene::init()
     CCSprite* background = CCSprite::create("013-PostTown01.jpg");
     background->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.5));
     background->setZOrder(kZOrder_Background);
+    background->setTag(kTag_Background);
     this->addChild(background);
     
     // TODO: BGM再生
@@ -191,6 +192,13 @@ void NovelScene::nextNovelJson()
             int dict = novel["dict"].get<double>();
             removeActorImage(dict);
         }
+        else if (textType == kBackgroundShow)
+        {
+            // 背景切替
+            string imgFilePath = novel["imgPath"].get<string>();
+            CCSprite* background = (CCSprite*)this->getChildByTag(kTag_Background);
+            background->runAction(NovelScene::changeBackgroundAnimation(background, imgFilePath));
+        }
 
         m_textIndex++;
 
@@ -206,6 +214,22 @@ void NovelScene::nextNovelJson()
             break;
         }
     }
+}
+
+CCFiniteTimeAction* NovelScene::changeBackgroundAnimation(CCSprite* sprite, string imgFilePath)
+{
+    CCFadeOut* fadeOut = CCFadeOut::create(0.5);
+    CCCallFuncND* func = CCCallFuncND::create(sprite, callfuncND_selector(NovelScene::changeBackground), &imgFilePath);
+    CCFadeIn* fadeIn = CCFadeIn::create(0.5);
+    return CCSequence::create(fadeOut, func, fadeIn, NULL);
+}
+
+void NovelScene::changeBackground(CCSprite* sprite, void* stringValue)
+{
+    const char* imgFilePath = ((string *)stringValue)->c_str();
+    CCLog("%s", imgFilePath);
+    CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(imgFilePath);
+    sprite->setTexture(texture);
 }
 
 
