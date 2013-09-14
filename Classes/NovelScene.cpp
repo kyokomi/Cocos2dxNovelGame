@@ -30,18 +30,16 @@ picojson::array createPicojson(unsigned char* novelJsonFile);
 
 NovelScene::NovelScene()
 :m_textIndex(0),
-isMenuSelect(false)
+isMenuSelect(false),
+isShowTextLog(false),
+m_novelJsonFile(NULL)
 {
     // jsonファイル読み込み
     unsigned long size = 0;
-
     m_novelJsonFile = CCFileUtils::sharedFileUtils()->getFileData("test.json", "r", &size);
     CCLog("Data is : %s",m_novelJsonFile);
-    CCLog("Size: %lu\n\n",size);
+    CCLog("Size: %lu\n\n", size);
     fflush(stdout);
-
-    std::stringstream ss;
-    ss << m_novelJsonFile;
 }
 
 CCScene* NovelScene::scene()
@@ -69,9 +67,7 @@ bool NovelScene::init()
     // TODO: 背景表示
     CCSprite* background = CCSprite::create("013-PostTown01.jpg");
     background->setPosition(ccp(winSize.width * 0.5, winSize.height * 0.5));
-    background->setZOrder(kZOrder_Background);
-    background->setTag(kTag_Background);
-    this->addChild(background);
+    this->addChild(background, kZOrder_Background, kTag_Background);
     
     // TODO: BGM再生
     
@@ -82,75 +78,61 @@ bool NovelScene::init()
     // 本文
     CCLayerColor * textLayer = CCLayerColor::create(ccc4(0, 0, 0, 255 * 0.7), winSize.width, winSize.height * 0.25);
     textLayer->setPosition(CCPointZero);
-    textLayer->setTag(kTag_TextLayer);
-    textLayer->setZOrder(kZOrder_TextLayer);
-    this->addChild(textLayer);
+    this->addChild(textLayer, kZOrder_TextLayer, kTag_TextLayer);
     
     CCString* string = CCString::createWithFormat("w = %f.1 h = %f.1 f = %f", winSize.width, winSize.height, BASE_FONT_SIZE);
     CCLog("%s", string->getCString());
     // 本文テキスト
     CCLabelTTF* textLabel = CCLabelTTF::create(string->getCString(), "", BASE_FONT_SIZE);
-    textLabel->setAnchorPoint(ccp(0, textLabel->getAnchorPoint().y));
+    textLabel->setAnchorPoint(ccp(0, 0));
     textLabel->setColor(ccWHITE);
-    textLabel->setPosition(ccp(textLayer->getContentSize().width * 0.05,
-                               textLayer->getContentSize().height * 0.7));
-    textLabel->setTag(kTag_TextLayer_textLabel);
-    textLabel->setZOrder(kZOrder_TextLayer);
-    // 
-    textLayer->addChild(textLabel);
+    textLabel->setPosition(ccp(BASE_FONT_SIZE, textLayer->getContentSize().height - textLabel->getContentSize().height - BASE_FONT_SIZE));
+    textLayer->addChild(textLabel, kZOrder_TextLayer, kTag_TextLayer_textLabel);
     
     // 名前
     CCLayerColor * nameTextLayer = CCLayerColor::create(ccc4(0, 0, 0, 255 * 0.7), winSize.width * 0.4, winSize.height * 0.1);
     nameTextLayer->setPosition(ccp(textLayer->getPositionX(), textLayer->getPositionY() + textLayer->getContentSize().height + nameTextLayer->getContentSize().height * 0.05));
-    nameTextLayer->setTag(kTag_TextLayer_name);
-    nameTextLayer->setZOrder(kZOrder_TextLayer);
-    this->addChild(nameTextLayer);
+    this->addChild(nameTextLayer, kZOrder_TextLayer, kTag_TextLayer_name);
     // 名前テキスト
     CCLabelTTF* nameTextLabel = CCLabelTTF::create("システムメッセージ", "", BASE_FONT_SIZE);
-    nameTextLabel->setAnchorPoint(ccp(0, nameTextLabel->getAnchorPoint().y));
+    nameTextLabel->setAnchorPoint(ccp(0, 0));
     nameTextLabel->setColor(ccGREEN);
-    nameTextLabel->setPosition(ccp(nameTextLayer->getContentSize().width * 0.05,
-                               nameTextLayer->getContentSize().height * 0.5));
-    nameTextLabel->setTag(kTag_TextLayer_nameTextLabel);
-    nameTextLabel->setZOrder(kZOrder_TextLayer);
-    //
-    nameTextLayer->addChild(nameTextLabel);
+    nameTextLabel->setPosition(ccp(BASE_FONT_SIZE, nameTextLayer->getContentSize().height - nameTextLabel->getContentSize().height - BASE_FONT_SIZE * 0.5));    
+    nameTextLayer->addChild(nameTextLabel, kZOrder_TextLayer, kTag_TextLayer_nameTextLabel);
     
     // -----------------------------
     // TODO: キャラ顔画像表示
     
     // -----------------------------
-    // ログ表示
-    std::vector<std::string> textArray;
-    picojson::array novelArray = createPicojson(m_novelJsonFile);
-    for (int i = 0; i < novelArray.size(); i++)
-//    for (int i = 0; i < m_textIndex; i++)
-    {
-        picojson::object& novel = novelArray[i].get<picojson::object>();
-        if (novel["text"])
-        {
-            textArray.push_back(novel["text"].get<std::string>());
-        }
-    }
-    TableViewTestLayer* logLayer = TableViewTestLayer::createWithTextArray(textArray);
-    logLayer->setPosition(CCPointZero);
-    this->addChild(logLayer, 9999, 9999);
+    // ログ表示用ボタン配置
+    
+    CCLabelTTF* logButtonLabel = CCLabelTTF::create("Log", "Arial", BASE_FONT_SIZE);
+    CCMenuItemLabel* logButtonMenuItem = CCMenuItemLabel::create(logButtonLabel, this, menu_selector(NovelScene::logMenuSelectCallback));
+    logButtonMenuItem->setPosition(ccp(winSize.width * 0.95, logButtonMenuItem->getContentSize().height));
+    
+    CCMenu* pMenu = CCMenu::create(logButtonMenuItem, NULL);
+    pMenu->setPosition(CCPointZero);
+    this->addChild(pMenu, kZOrder_MenuItem, kTag_MenuItem_log);
     
     return true;
 }
 
 /**
- TODO: touchEndのほうがよさそう
+ タッチイベント
  */
 bool NovelScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
     CCLog("%s", "------ ccTouchBegan ------");
-    
-    if (isMenuSelect)
+    // 選択肢とバックログ表示中は何もしない
+    if (isMenuSelect || isShowTextLog)
     {
         return false;
     }
     
+    return true;
+}
+void NovelScene::ccTouchEnded(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)
+{
     // テキストエリアのタッチを判定
     CCLayer* pLayer = (CCLayer*) this->getChildByTag(kTag_TextLayer);
     if (pLayer->boundingBox().containsPoint(pTouch->getLocation()))
@@ -158,7 +140,6 @@ bool NovelScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
         // テキストをすすめる
         nextNovelJson();
     }
-    return true;
 }
 
 void NovelScene::dispText(string text)
@@ -183,33 +164,9 @@ void NovelScene::dispName(string name)
     }
 }
 
-picojson::array createPicojson(unsigned char* novelJsonFile)
-{
-    std::stringstream ss;
-    ss << novelJsonFile;
-    
-    picojson::value novelJson;
-    ss >> novelJson;
-    
-    picojson::object& o = novelJson.get<picojson::object>();
-    picojson::array novelArray = o["novel"].get<picojson::array>();
-    
-    return novelArray;
-}
-
 void NovelScene::nextNovelJson()
 {
     picojson::array novelArray = createPicojson(m_novelJsonFile);
-    
-//    std::stringstream ss;
-//    ss << m_novelJsonFile;
-//    
-//    picojson::value novelJson;
-//    ss >> novelJson;
-//    
-//    picojson::object& o = novelJson.get<picojson::object>();
-//    picojson::array novelArray = o["novel"].get<picojson::array>();
-
     CCLOG("index = %d", m_textIndex);
     while (m_textIndex < novelArray.size())
     {
@@ -239,8 +196,9 @@ void NovelScene::nextNovelJson()
         {
             // 背景切替
             string imgFilePath = novel["imgPath"].get<string>();
+            
             CCSprite* background = (CCSprite*)this->getChildByTag(kTag_Background);
-            background->runAction(NovelScene::changeBackgroundAnimation(background, imgFilePath));
+            background->runAction(NovelScene::changeBackgroundAnimation(imgFilePath));
         }
 
         m_textIndex++;
@@ -259,20 +217,23 @@ void NovelScene::nextNovelJson()
     }
 }
 
-CCFiniteTimeAction* NovelScene::changeBackgroundAnimation(CCSprite* sprite, string imgFilePath)
+CCFiniteTimeAction* NovelScene::changeBackgroundAnimation(string imgFilePath)
 {
+    CCString* imgFilePathString = new CCString(imgFilePath);
+    CCLog("imgFilePath = %s", imgFilePathString->getCString());
+    
     CCFadeOut* fadeOut = CCFadeOut::create(0.5);
-    CCCallFuncND* func = CCCallFuncND::create(sprite, callfuncND_selector(NovelScene::changeBackground), &imgFilePath);
+    CCCallFuncND* func = CCCallFuncND::create(this, callfuncND_selector(NovelScene::changeBackground), imgFilePathString);
     CCFadeIn* fadeIn = CCFadeIn::create(0.5);
     return CCSequence::create(fadeOut, func, fadeIn, NULL);
 }
 
-void NovelScene::changeBackground(CCSprite* sprite, void* stringValue)
+void NovelScene::changeBackground(CCObject *pSender, void* node)
 {
-    const char* imgFilePath = ((string *)stringValue)->c_str();
-    CCLog("%s", imgFilePath);
-    CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(imgFilePath);
-    sprite->setTexture(texture);
+    CCString* imgFilePath = (CCString*) node;
+    CCTexture2D *texture = CCTextureCache::sharedTextureCache()->addImage(imgFilePath->getCString());
+    ((CCSprite*)pSender)->setTexture(texture);
+    imgFilePath->release();
 }
 
 
@@ -306,16 +267,18 @@ void NovelScene::makeSelectSpriteButton(string str1, int next1Id, string str2, i
         //メニュー作成
         pMenu = CCMenu::create(menuSprite1, menuSprite2, NULL);
         pMenu->setPosition(CCPointZero);
-        pMenu->setTag(kTag_MenuSelect);
-        pMenu->setZOrder(kZOrder_MenuSelect);
-        
-        this->addChild(pMenu);
+        this->addChild(pMenu, kZOrder_MenuSelect, kTag_MenuSelect);
     }
 }
 
 
 void NovelScene::menuSelectCallback(cocos2d::CCObject *pSender)
 {
+    if (isShowTextLog)
+    {
+        return;
+    }
+    
     this->getChildByTag(kTag_MenuSelect)->setVisible(false);
     isMenuSelect = false;
 
@@ -355,11 +318,8 @@ void NovelScene::makeActorImage(const char* imageFilePath, int dict)
     {
         point = ccp(winSize.width - actor->boundingBox().size.width * 0.5, actor->boundingBox().size.height * 0.5);
     }
-    actor->setPosition(point);
-    actor->setTag(dictTag);
-    actor->setZOrder(kZOrder_Actor);
-    
-    this->addChild(actor);
+    actor->setPosition(point);    
+    this->addChild(actor, kZOrder_Actor, dictTag);
 }
 
 void NovelScene::removeActorImage(int dict)
@@ -370,6 +330,79 @@ void NovelScene::removeActorImage(int dict)
     {
         actor->removeFromParent();
     }
+}
+
+void NovelScene::logMenuSelectCallback(cocos2d::CCObject *pSender)
+{
+    if (isShowTextLog)
+    {
+        hideTextLog();
+    }
+    else
+    {
+        showTextLog(m_textIndex);
+    }
+}
+
+void NovelScene::showTextLog(int showTextIndex)
+{
+    if (showTextIndex <= 0)
+    {
+        return;
+    }
+    isShowTextLog = true;
+    
+    std::vector<std::string> textArray;
+    picojson::array novelArray = createPicojson(m_novelJsonFile);
+    for (int i = 0; i < showTextIndex; i++)
+    {
+        picojson::object& novel = novelArray[i].get<picojson::object>();
+        if (novel["text"])
+        {
+            textArray.push_back(novel["text"].get<std::string>());
+        }
+    }
+    
+    TableViewTestLayer* logLayer = (TableViewTestLayer*) this->getChildByTag(kTag_TextLogLayer);
+    if (logLayer)
+    {        
+        logLayer->makeTextLog(textArray);
+        logLayer->setVisible(true);
+    }
+    else
+    {
+        logLayer = TableViewTestLayer::createWithTextArray(textArray);
+        logLayer->setPosition(CCPointZero);
+        this->addChild(logLayer, kZOrder_TextLogLayer, kTag_TextLogLayer);
+    }
+}
+
+void NovelScene::hideTextLog()
+{
+    TableViewTestLayer* logLayer = (TableViewTestLayer*) this->getChildByTag(kTag_TextLogLayer);
+    if (logLayer)
+    {
+        logLayer->setVisible(false);
+    }
+    
+    isShowTextLog = false;
+}
+
+
+picojson::array createPicojson(unsigned char* novelJsonFile)
+{
+    fflush(stdout);
+    
+    std::stringstream ss;
+    ss << novelJsonFile;
+    
+    picojson::value novelJson;
+    ss >> novelJson;
+    
+    picojson::object& o = novelJson.get<picojson::object>();
+    picojson::array novelArray = o["novel"].get<picojson::array>();
+    
+    return novelArray;
 }
 
 

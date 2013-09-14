@@ -7,6 +7,14 @@
 class TableViewTestLayer : public cocos2d::CCLayerColor, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate
 {
     std::vector<std::string> m_textArray;
+    
+    enum kTag
+    {
+        kTag_TextLayer = 1,
+        kTag_TextLabel,
+        kTag_TableView,
+    };
+    
 public:
     virtual bool init(std::vector<std::string> textArray);  
    
@@ -21,6 +29,8 @@ public:
     virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);
     virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);
     virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);
+    
+    void makeTextLog(std::vector<std::string> textArray);
 };
 
 #endif // __TABLEVIEWTESTSCENE_H__

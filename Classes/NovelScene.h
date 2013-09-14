@@ -18,6 +18,9 @@ class NovelScene : public cocos2d::CCLayer
 {
     /** 選択肢表示中フラグ */
     bool isMenuSelect;
+    /** バックログ表示中フラグ */
+    bool isShowTextLog;
+    
     /** ノベル情報Json */
     unsigned char* m_novelJsonFile;
     /** ノベルテキスト送りインデックス */
@@ -39,8 +42,12 @@ class NovelScene : public cocos2d::CCLayer
     void makeActorImage(const char* imageFilePath, int dict);
     void removeActorImage(int dict);
     
-    void changeBackground(CCSprite* sprite, void* stringValue);
-    CCFiniteTimeAction* changeBackgroundAnimation(CCSprite* sprite, string imgFilePath);
+    CCFiniteTimeAction* changeBackgroundAnimation(string imgFilePath);
+    void changeBackground(CCObject *pSender, void* node);
+    
+    void logMenuSelectCallback(CCObject *pSender);
+    void showTextLog(int showTextIndex);
+    void hideTextLog();
 protected:
     
     enum kTag
@@ -57,9 +64,15 @@ protected:
         kTag_ActorDictRight,
         
         /** 選択肢用 */
-        kTag_MenuSelect = 100000,
+        kTag_MenuSelect   = 10000,
         kTag_MenuSelect1,
         kTag_MenuSelect2,
+        
+        /** バックログ */
+        kTag_TextLogLayer = 20000,
+        
+        /** メニュー */
+        kTag_MenuItem_log = 30000,
     };
     
     enum kZOrder
@@ -68,6 +81,8 @@ protected:
         kZOrder_Actor,
         kZOrder_TextLayer,
         kZOrder_MenuSelect,
+        kZOrder_TextLogLayer,
+        kZOrder_MenuItem,
     };
     
     enum kNovelType
@@ -87,7 +102,7 @@ public:
     
     virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);
 //    virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);
-//    virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
+    virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);
 //    virtual void ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent);
 };
 

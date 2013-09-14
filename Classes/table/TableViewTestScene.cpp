@@ -46,6 +46,7 @@ bool TableViewTestLayer::init(std::vector<std::string> textArray)
 	tableView->setDelegate(this);
 //    tableView->setBounceable(false); // スクロールオーバー
 	tableView->setVerticalFillOrder(kCCTableViewFillTopDown);
+    tableView->setTag(kTag_TableView);
 	this->addChild(tableView);
 	tableView->reloadData();
 
@@ -87,23 +88,23 @@ CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsign
         CCLayerColor * textLayer = CCLayerColor::create(ccc4(0, 0, 0, 255 * 0.7),
                                                         winSize.width * 0.9, winSize.height * 0.25 * 0.9);
         textLayer->setPosition(winSize.width * 0.05, winSize.height * 0.25 * 0.05);
-        textLayer->setTag(123);
+        textLayer->setTag(kTag_TextLayer);
         cell->addChild(textLayer);
         
         // 本文テキスト
         CCLabelTTF* textLabel = CCLabelTTF::create(string->getCString(), "Arial", BASE_FONT_SIZE);
         textLabel->setAnchorPoint(ccp(0, 0));
         textLabel->setColor(ccWHITE);
-        textLabel->setPosition(ccp(BASE_FONT_SIZE, BASE_FONT_SIZE));
-        textLabel->setTag(100124);
+        textLabel->setPosition(ccp(BASE_FONT_SIZE, textLayer->getContentSize().height - textLabel->getContentSize().height - BASE_FONT_SIZE));
+        textLabel->setTag(kTag_TextLabel);
 
         textLabel->setHorizontalAlignment(kCCTextAlignmentLeft);
         textLayer->addChild(textLabel);
     }
     else
     {
-        CCLayerColor* textLayer = (CCLayerColor*)cell->getChildByTag(123);
-        CCLabelTTF* textLabel = (CCLabelTTF*)textLayer->getChildByTag(100124);
+        CCLayerColor* textLayer = (CCLayerColor*)cell->getChildByTag(kTag_TextLayer);
+        CCLabelTTF* textLabel = (CCLabelTTF*)textLayer->getChildByTag(kTag_TextLabel);
         textLabel->setString(string->getCString());
     }
 
@@ -114,4 +115,10 @@ CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsign
 unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)
 {
     return m_textArray.size();
+}
+
+void TableViewTestLayer::makeTextLog(std::vector<std::string> textArray)
+{
+    m_textArray = textArray;
+    ((CCTableView*)this->getChildByTag(kTag_TableView))->reloadData();
 }
