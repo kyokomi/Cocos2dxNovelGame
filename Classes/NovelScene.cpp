@@ -26,6 +26,8 @@ using namespace cocos2d;
 USING_NS_CC_EXT;
 using namespace std;
 
+picojson::array createPicojson(unsigned char* novelJsonFile);
+
 NovelScene::NovelScene()
 :m_textIndex(0),
 isMenuSelect(false)
@@ -119,7 +121,18 @@ bool NovelScene::init()
     
     // -----------------------------
     // ログ表示
-    TableViewTestLayer* logLayer = TableViewTestLayer::create();
+    std::vector<std::string> textArray;
+    picojson::array novelArray = createPicojson(m_novelJsonFile);
+    for (int i = 0; i < novelArray.size(); i++)
+//    for (int i = 0; i < m_textIndex; i++)
+    {
+        picojson::object& novel = novelArray[i].get<picojson::object>();
+        if (novel["text"])
+        {
+            textArray.push_back(novel["text"].get<std::string>());
+        }
+    }
+    TableViewTestLayer* logLayer = TableViewTestLayer::createWithTextArray(textArray);
     logLayer->setPosition(CCPointZero);
     this->addChild(logLayer, 9999, 9999);
     
@@ -170,10 +183,10 @@ void NovelScene::dispName(string name)
     }
 }
 
-void NovelScene::nextNovelJson()
+picojson::array createPicojson(unsigned char* novelJsonFile)
 {
     std::stringstream ss;
-    ss << m_novelJsonFile;
+    ss << novelJsonFile;
     
     picojson::value novelJson;
     ss >> novelJson;
@@ -181,6 +194,22 @@ void NovelScene::nextNovelJson()
     picojson::object& o = novelJson.get<picojson::object>();
     picojson::array novelArray = o["novel"].get<picojson::array>();
     
+    return novelArray;
+}
+
+void NovelScene::nextNovelJson()
+{
+    picojson::array novelArray = createPicojson(m_novelJsonFile);
+    
+//    std::stringstream ss;
+//    ss << m_novelJsonFile;
+//    
+//    picojson::value novelJson;
+//    ss >> novelJson;
+//    
+//    picojson::object& o = novelJson.get<picojson::object>();
+//    picojson::array novelArray = o["novel"].get<picojson::array>();
+
     CCLOG("index = %d", m_textIndex);
     while (m_textIndex < novelArray.size())
     {

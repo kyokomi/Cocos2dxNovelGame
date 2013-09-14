@@ -6,21 +6,37 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
-void runTableViewTest()
+TableViewTestLayer::TableViewTestLayer()
+:m_textArray(std::vector<std::string>())
 {
-	CCScene *pScene = CCScene::create();
-	TableViewTestLayer *pLayer = TableViewTestLayer::create();
-	pScene->addChild(pLayer);
-	CCDirector::sharedDirector()->replaceScene(pScene);
+
+}
+
+
+TableViewTestLayer* TableViewTestLayer::createWithTextArray(std::vector<std::string> textArray)
+{
+    TableViewTestLayer *pRet = new TableViewTestLayer();
+    if (pRet && pRet->init(textArray))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    else
+    {
+        delete pRet;
+        pRet = NULL;
+        return NULL;
+    }
 }
 
 // on "init" you need to initialize your instance
-bool TableViewTestLayer::init()
+bool TableViewTestLayer::init(std::vector<std::string> textArray)
 {
     if ( !CCLayerColor::init() )
     {
         return false;
     }
+    m_textArray = textArray;
 
 	CCSize winSize = CCDirector::sharedDirector()->getWinSize();
     
@@ -28,7 +44,7 @@ bool TableViewTestLayer::init()
 	tableView->setDirection(kCCScrollViewDirectionVertical);
     tableView->setPosition(ccp(tableView->getPositionX(), winSize.height * 0.1));
 	tableView->setDelegate(this);
-    tableView->setBounceable(false);
+//    tableView->setBounceable(false); // スクロールオーバー
 	tableView->setVerticalFillOrder(kCCTableViewFillTopDown);
 	this->addChild(tableView);
 	tableView->reloadData();
@@ -53,8 +69,16 @@ CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned in
 CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)
 {
     CCSize winSize = CCDirector::sharedDirector()->getWinSize();
+
+    std::string text = "hogehoge";
     
-    CCString *string = CCString::createWithFormat("AaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaE\nAaaaaaaE\nAaaaaaaaaE%d", idx);
+    CCLog("idx = %d size = %ld", idx, m_textArray.size());
+    
+    if (m_textArray.size() > 0 && idx < m_textArray.size())
+    {
+        text = m_textArray[idx];
+    }
+    CCString *string = CCString::createWithFormat("[%d] : %s", idx, text.c_str());
     CCTableViewCell *cell = table->dequeueCell();
     if (!cell) {
         cell = new CustomTableViewCell();
@@ -89,5 +113,5 @@ CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsign
 
 unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)
 {
-    return 20;
+    return m_textArray.size();
 }

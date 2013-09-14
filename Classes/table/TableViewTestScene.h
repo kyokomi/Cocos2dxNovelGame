@@ -4,16 +4,16 @@
 #include "cocos2d.h"
 #include "cocos-ext.h"
 
-void runTableViewTest();
-
 class TableViewTestLayer : public cocos2d::CCLayerColor, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate
 {
+    std::vector<std::string> m_textArray;
 public:
-    virtual bool init();  
+    virtual bool init(std::vector<std::string> textArray);  
    
+    TableViewTestLayer();
 //	void toExtensionsMainLayer(cocos2d::CCObject *sender);
-
-    CREATE_FUNC(TableViewTestLayer);
+    
+    static TableViewTestLayer* createWithTextArray(std::vector<std::string> textArray);
     
     virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view) {};
     virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view) {}
