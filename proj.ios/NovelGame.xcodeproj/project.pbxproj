@@ -127,7 +127,7 @@
 		15A3DA5D1682F826002FB0C5 /* HttpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A3DA1B1682F826002FB0C5 /* HttpClient.cpp */; };
 		15A3DA5E1682F826002FB0C5 /* CCPhysicsDebugNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A3DA201682F826002FB0C5 /* CCPhysicsDebugNode.cpp */; };
 		15A3DA5F1682F826002FB0C5 /* CCPhysicsSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A3DA221682F826002FB0C5 /* CCPhysicsSprite.cpp */; };
-		15A3DA6A1682F886002FB0C5 /* libcocos2dx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15A3D8861682F7B3002FB0C5 /* libcocos2dx.a */; };
+		15A3DA6A1682F886002FB0C5 /* libcocos2dx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15A3D8861682F7B3002FB0C5 /* libcocos2dx.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		15A3DAEB1682F8A6002FB0C5 /* CDAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A3DA861682F8A6002FB0C5 /* CDAudioManager.m */; };
 		15A3DAEC1682F8A6002FB0C5 /* CDOpenALSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A3DA891682F8A6002FB0C5 /* CDOpenALSupport.m */; };
 		15A3DAED1682F8A6002FB0C5 /* CocosDenshion.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A3DA8B1682F8A6002FB0C5 /* CocosDenshion.m */; };
@@ -208,6 +208,8 @@
 		BF1712461292920000B8313A /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB212928DE900B8313A /* libxml2.dylib */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
+		CE12276B17E425BF00D9CAE6 /* CustomTableViewCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE12276717E425BF00D9CAE6 /* CustomTableViewCell.cpp */; };
+		CE12276C17E425BF00D9CAE6 /* TableViewTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE12276917E425BF00D9CAE6 /* TableViewTestScene.cpp */; };
 		CE1F56F017D775330012F439 /* menu_button.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1F56EF17D775330012F439 /* menu_button.png */; };
 		CE329C5C17D32DCC00A26D7B /* TitleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE329C5A17D32DCC00A26D7B /* TitleScene.cpp */; };
 		CE329C5F17D32DD600A26D7B /* NovelScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE329C5D17D32DD600A26D7B /* NovelScene.cpp */; };
@@ -653,6 +655,10 @@
 		BF170DB212928DE900B8313A /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CE12276717E425BF00D9CAE6 /* CustomTableViewCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomTableViewCell.cpp; sourceTree = "<group>"; };
+		CE12276817E425BF00D9CAE6 /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		CE12276917E425BF00D9CAE6 /* TableViewTestScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TableViewTestScene.cpp; sourceTree = "<group>"; };
+		CE12276A17E425BF00D9CAE6 /* TableViewTestScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewTestScene.h; sourceTree = "<group>"; };
 		CE1F56EF17D775330012F439 /* menu_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_button.png; sourceTree = "<group>"; };
 		CE329C5A17D32DCC00A26D7B /* TitleScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TitleScene.cpp; path = ../Classes/TitleScene.cpp; sourceTree = "<group>"; };
 		CE329C5B17D32DCC00A26D7B /* TitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TitleScene.h; path = ../Classes/TitleScene.h; sourceTree = "<group>"; };
@@ -1198,10 +1204,11 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CE12276617E425BE00D9CAE6 /* table */,
 				1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */,
 				1AFAF8B416D35DE700DB1158 /* AppDelegate.h */,
-				CE329C5A17D32DCC00A26D7B /* TitleScene.cpp */,
 				CE329C5B17D32DCC00A26D7B /* TitleScene.h */,
+				CE329C5A17D32DCC00A26D7B /* TitleScene.cpp */,
 				CE329C5D17D32DD600A26D7B /* NovelScene.cpp */,
 				CE329C5E17D32DD600A26D7B /* NovelScene.h */,
 				CE93116F17D7FAF50006D18D /* picojson.h */,
@@ -1528,6 +1535,18 @@
 			path = ../Resources;
 			sourceTree = "<group>";
 		};
+		CE12276617E425BE00D9CAE6 /* table */ = {
+			isa = PBXGroup;
+			children = (
+				CE12276717E425BF00D9CAE6 /* CustomTableViewCell.cpp */,
+				CE12276817E425BF00D9CAE6 /* CustomTableViewCell.h */,
+				CE12276917E425BF00D9CAE6 /* TableViewTestScene.cpp */,
+				CE12276A17E425BF00D9CAE6 /* TableViewTestScene.h */,
+			);
+			name = table;
+			path = ../Classes/table;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1814,6 +1833,8 @@
 				CE329C5F17D32DD600A26D7B /* NovelScene.cpp in Sources */,
 				CE41FD1217DA9EB50093C3F0 /* LabelSprite.cpp in Sources */,
 				CE41FD1617DAAA2C0093C3F0 /* MenuItemSelectLabelSprite.cpp in Sources */,
+				CE12276B17E425BF00D9CAE6 /* CustomTableViewCell.cpp in Sources */,
+				CE12276C17E425BF00D9CAE6 /* TableViewTestScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

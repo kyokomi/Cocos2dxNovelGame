@@ -12,6 +12,10 @@
 #include "LabelSprite.h"
 #include "MenuItemSelectLabelSprite.h"
 
+#include "table/TableViewTestScene.h"
+
+#include "cocos-ext.h"
+
 #include "picojson.h"
 #include <string>
 #include <sstream>
@@ -19,6 +23,7 @@
 #include <iostream>
 
 using namespace cocos2d;
+USING_NS_CC_EXT;
 using namespace std;
 
 NovelScene::NovelScene()
@@ -112,9 +117,18 @@ bool NovelScene::init()
     // -----------------------------
     // TODO: キャラ顔画像表示
     
+    // -----------------------------
+    // ログ表示
+    TableViewTestLayer* logLayer = TableViewTestLayer::create();
+    logLayer->setPosition(CCPointZero);
+    this->addChild(logLayer, 9999, 9999);
+    
     return true;
 }
 
+/**
+ TODO: touchEndのほうがよさそう
+ */
 bool NovelScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
     CCLog("%s", "------ ccTouchBegan ------");
